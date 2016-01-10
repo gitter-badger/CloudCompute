@@ -14,29 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cloudcompute;
+package cloudcompute.lib.math.Sieves;
 
-import cloudcompute.lib.IO;
-import cloudcompute.lib.examples.CalcPi;
-import cloudcompute.lib.examples.Fibonacci;
-import cloudcompute.lib.math.LinearAlgebra.Matrix;
-import cloudcompute.lib.math.Sums.Pi;
-import cloudcompute.lib.math.arithmetic.Power;
-import cloudcompute.lib.parallelization.math.Fibonacci_par;
-import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
- * @author director
+ * @author brown
  */
-public class CloudCompute {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        int x = 100000000;
-        IO.write(args[0] + x + ".txt"  , Fibonacci.fibonacci_bi(x).toString());
-        
+
+public class PrimeLib {
+    public static boolean arecoprime(int a, int b) {
+        if (a != 1 && b != 1) {
+            if (a == b + 1 || a == b - 1) {
+                return true;
+                }
+                for (int i = 2; i <= Math.min(a, b); i++) {
+                    if (a % i == b % i) {
+                        return false;
+                    }
+                }
+            }
+        return true;
     }
 }

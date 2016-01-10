@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) ChemicalDevelopment 2016
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,29 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cloudcompute;
+package cloudcompute.lib.examples;
 
-import cloudcompute.lib.IO;
-import cloudcompute.lib.examples.CalcPi;
-import cloudcompute.lib.examples.Fibonacci;
-import cloudcompute.lib.math.LinearAlgebra.Matrix;
 import cloudcompute.lib.math.Sums.Pi;
-import cloudcompute.lib.math.arithmetic.Power;
-import cloudcompute.lib.parallelization.math.Fibonacci_par;
 import java.math.BigDecimal;
 
 /**
  *
- * @author director
+ * @author brown
  */
-public class CloudCompute {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        int x = 100000000;
-        IO.write(args[0] + x + ".txt"  , Fibonacci.fibonacci_bi(x).toString());
-        
+public class CalcPi {
+    
+    public static BigDecimal pi_arctan(int digits) {
+        BigDecimal f = new BigDecimal(4);
+        BigDecimal total = BigDecimal.ZERO;
+        total = total.add(f.multiply(Pi.atan_inv(5, digits)));
+        total = total.subtract(Pi.atan_inv(239, digits));
+        total = f.multiply(total);
+        return total;
     }
+    
 }
