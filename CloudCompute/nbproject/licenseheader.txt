@@ -1,0 +1,7 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Used to compute parallel tasks quickly on a highly scalable system.
+<#if licenseLast??>
+${licenseLast}
+</#if>
