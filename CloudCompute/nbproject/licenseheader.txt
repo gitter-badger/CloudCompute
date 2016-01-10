@@ -1,7 +1,7 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}Used to compute parallel tasks quickly on a highly scalable system.
+${licensePrefix} ChemicalDevelopment 2016
+${licensePrefix} Cloud computing parallel tasks
 <#if licenseLast??>
 ${licenseLast}
-</#if>
