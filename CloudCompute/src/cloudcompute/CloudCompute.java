@@ -34,9 +34,12 @@ public class CloudCompute {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        int x = 100000000;
-        IO.write(args[0] + x + ".txt"  , Fibonacci.fibonacci_bi(x).toString());
+    public static void main(String[] args) throws InterruptedException {
+        /*int x = 1000000000;
+        IO.write(args[0] + x + ".txt"  , Fibonacci.fibonacci_bi(x).toString());*/
+        int n = 10000;
+        //IO.write(args[0] + n + ".txt", "" + Fibonacci.fibonacci_bi(n));
+        IO.write(args[0] + n + ".txt", "" + Fibonacci_par.fibonacci_list_bi(n));
         
     }
 }

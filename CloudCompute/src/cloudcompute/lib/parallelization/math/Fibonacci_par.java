@@ -41,15 +41,28 @@ public class Fibonacci_par {
 
     }
 
-    public static List<BigInteger> fibonacci_list_bi(int n) {
-        //n *= 3;
-        List<BigInteger> l = new ArrayList<>();
-        l.add(BigInteger.ONE);
-        int b = n / MultiThreading.getcores();
-        for (int i = 0; i < MultiThreading.getcores(); i++) {
-            l.addAll(Fibonacci.fibonacci_list_bi(b * (i) + 1, b * (i + 1)));
-        }
+    public static List<BigInteger> fibonacci_list_bi(int n) throws InterruptedException {
         Set<BigInteger> hs = new HashSet<>();
+        List<BigInteger> l = new ArrayList<>();
+
+        int b = n / MultiThreading.getcores();
+        ListGen[] ls = new ListGen[MultiThreading.getcores()];
+        for (int i = 0; i < MultiThreading.getcores(); i++) {
+            ls[i] = new ListGen(b * i, b * (i + 1));
+        }
+        
+        for (int i = 0; i < ls.length; i++) {
+            ls[i].start();
+        }
+        for (int i = 0; i < ls.length; i++) {
+            ls[i].join();
+        }
+        for (int i = 0; i < ls.length; i++) {
+            System.out.println("" + ls[i].r);
+            l.addAll(ls[i].r);
+            
+        }
+        
         hs.addAll(l);
         l.clear();
         l.addAll(hs);
