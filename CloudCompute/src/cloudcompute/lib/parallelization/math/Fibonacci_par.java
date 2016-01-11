@@ -58,7 +58,7 @@ public class Fibonacci_par {
             ls[i].join();
         }
         for (int i = 0; i < ls.length; i++) {
-            System.out.println("" + ls[i].r);
+            
             l.addAll(ls[i].r);
             
         }

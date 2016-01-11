@@ -17,6 +17,7 @@
 package cloudcompute.lib.examples;
 
 import cloudcompute.lib.math.Sums.Pi;
+import cloudcompute.lib.parallelization.math.Arctan_run;
 import java.math.BigDecimal;
 
 /**
@@ -25,12 +26,31 @@ import java.math.BigDecimal;
  */
 public class CalcPi {
     
-    public static BigDecimal pi_arctan(int digits) {
-        BigDecimal f = new BigDecimal(4);
+    public static BigDecimal pi_arctan(int digits) throws InterruptedException {
+        BigDecimal a = new BigDecimal(176);
+        BigDecimal b = new BigDecimal(28);
+        BigDecimal c = new BigDecimal(-48);
+        BigDecimal d = new BigDecimal(96);
         BigDecimal total = BigDecimal.ZERO;
-        total = total.add(f.multiply(Pi.atan_inv(5, digits)));
-        total = total.subtract(Pi.atan_inv(239, digits));
-        total = f.multiply(total);
+        
+        Arctan_run t1 = new Arctan_run(57, digits);
+        Arctan_run t2 = new Arctan_run(239, digits);
+        Arctan_run t3 = new Arctan_run(682, digits);
+        Arctan_run t4 = new Arctan_run(12943, digits);
+        t1.run();
+        t2.run();
+        t3.run();
+        t4.run();
+        t1.join();
+        t2.join();
+        t3.join();
+        t4.join();
+        
+        total = total.add(a.multiply(t1.r));
+        total = total.add(b.multiply(t2.r));
+        total = total.add(c.multiply(t3.r));
+        total = total.add(d.multiply(t4.r));
+        
         return total;
     }
     
