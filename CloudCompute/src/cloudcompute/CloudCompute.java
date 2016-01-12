@@ -39,14 +39,22 @@ public class CloudCompute {
     public static void main(String[] args) throws InterruptedException, TwitterException {
         TwitterLib.init();
 
-        int i = 1000000000;
+        int i = Integer.parseInt(args[0]);
         String path = "C:/Temp/CC/Fibonacci/";
+        long start = System.nanoTime();
         IO.write(path + i + ".txt", "" + Fibonacci.fibonacci_bi_optimized(i));
+        long end = System.nanoTime();
+        System.out.println("Done! (" + (end - start) / 1000000000 +  ")");
 
         /*int digits = 40000;
         String s = CalcPi.pi_arctan(digits + 25).toString();
-        
+        int digits = 40000;
+        String s = CalcPi.pi_arctan(digits + 250).toString();
+        System.out.println("Calculated " + digits + "of pi");
+        Thread.sleep(1000 * 60 * 60 * 3);
         int tweetsperhour = 6; //LESS THAN 100
+        System.out.println("Beginning to tweet");
+
         for (int i = 0; i < digits; i += 140) {
             TwitterLib.tweet(s.substring(i, i + 139));
             Thread.sleep(3600000 / tweetsperhour);
