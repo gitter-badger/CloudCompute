@@ -34,13 +34,10 @@ public class Eratosthenes {
         List<Integer> a = new ArrayList<>();
         int m = 1;
         p.add(2);
-        p.add(3);
-        p.add(5);
-        p.add(7);
         for (int v : p) {
             m *= v;
         }
-        for (int i = 1; i < m; i++) {
+        for (int i = 1; i < m && i < max; i++) {
             if (p.contains(i)) {
                 continue;
             }

@@ -16,8 +16,15 @@
  */
 package cloudcompute;
 
+import cloudcompute.lib.IO;
 import cloudcompute.lib.Twitter.TwitterLib;
-import cloudcompute.lib.examples.CalcPi;
+import cloudcompute.lib.examples.Fibonacci;
+import cloudcompute.lib.math.LinearAlgebra.Matrix;
+import cloudcompute.lib.math.Sieves.Eratosthenes;
+import cloudcompute.lib.math.Sieves.PrimeLib;
+import cloudcompute.lib.math.sequences.PrimorialResidue;
+import java.util.ArrayList;
+import java.util.List;
 import twitter4j.TwitterException;
 
 /**
@@ -31,15 +38,18 @@ public class CloudCompute {
      */
     public static void main(String[] args) throws InterruptedException, TwitterException {
         TwitterLib.init();
-        int digits = 40000;
+
+        int i = 1000000000;
+        String path = "C:/Temp/CC/Fibonacci/";
+        IO.write(path + i + ".txt", "" + Fibonacci.fibonacci_bi_optimized(i));
+
+        /*int digits = 40000;
         String s = CalcPi.pi_arctan(digits + 25).toString();
-        
-        Thread.sleep(1000 * 60 * 60 * 3);
         
         int tweetsperhour = 6; //LESS THAN 100
         for (int i = 0; i < digits; i += 140) {
             TwitterLib.tweet(s.substring(i, i + 139));
             Thread.sleep(3600000 / tweetsperhour);
-        }
+        }*/
     }
 }

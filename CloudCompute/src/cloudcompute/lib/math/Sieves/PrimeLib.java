@@ -31,11 +31,21 @@ public class PrimeLib {
                 return true;
                 }
                 for (int i = 2; i <= Math.min(a, b); i++) {
-                    if (a % i == b % i) {
+                    if (a % i == 0 && b % i == 0) {
                         return false;
                     }
                 }
             }
+        return true;
+    }
+    public static boolean arecoprime_s(List<Integer> a) {
+        int prev = 0;
+        for (int v : a) {
+            if (!arecoprime(v, prev)) {
+                return false;
+            }
+            prev = v;
+        }
         return true;
     }
 }

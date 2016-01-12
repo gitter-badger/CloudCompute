@@ -66,6 +66,25 @@ public class Fibonacci {
         }
     }
     
+    public static BigInteger fibonacci_bi_optimized(int n) {
+        BigInteger[][] m = Matrix.pow_bi(new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}}, 3);
+        int mod = n % 3;
+        int pow = 0;
+        if (mod == 2) {
+            pow = n / 3 + 1;
+        } else {
+            pow = n / 3;
+        }
+        BigInteger[][] d = Matrix.pow_bi_2x2(m, pow);
+        if (mod == 1) {
+            return d[1][1];
+        } else if (mod == 2) {
+            return d[0][0];
+        } else {
+            return d[1][0];
+        }
+    }
+    
     public static List<Integer> fibonacci_list(int start, int end) {
         List<Integer> f = new ArrayList<>();
         int[][] m = Matrix.pow_i(new int[][]{{0, 1}, {1, 1}}, 3);
