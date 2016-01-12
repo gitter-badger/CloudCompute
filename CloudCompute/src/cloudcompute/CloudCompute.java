@@ -18,6 +18,7 @@ package cloudcompute;
 
 import cloudcompute.lib.IO;
 import cloudcompute.lib.Twitter.TwitterLib;
+import cloudcompute.lib.math.Sieves.Eratosthenes;
 import cloudcompute.lib.math.sequences.Format;
 import cloudcompute.lib.math.sequences.PrimorialResidue;
 import twitter4j.TwitterException;
@@ -37,7 +38,7 @@ public class CloudCompute {
         int i = Integer.parseInt("1000000");
         String path = "C:/Temp/CC/PrimorialResidue/";
         long start = System.nanoTime();
-        IO.write(path + i + ".txt", "" + Format.pair(PrimorialResidue.find(i)));
+        IO.write(path + i + ".txt", "" + Format.pair(Eratosthenes.primes(i)));
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 +  ")");
 
