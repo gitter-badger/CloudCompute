@@ -16,12 +16,10 @@
  */
 package cloudcompute;
 
-import cloudcompute.lib.IO;
 import cloudcompute.lib.Twitter.TwitterLib;
-import cloudcompute.lib.examples.Fibonacci;
-import cloudcompute.lib.math.Sieves.Eratosthenes;
 import cloudcompute.lib.math.sequences.Format;
 import cloudcompute.lib.math.sequences.PrimorialResidue;
+import java.io.IOException;
 import twitter4j.TwitterException;
 
 /**
@@ -33,15 +31,15 @@ public class CloudCompute {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException, TwitterException {
+    public static void main(String[] args) throws InterruptedException, TwitterException, IOException {
         TwitterLib.init();
-        
-        int i = Integer.parseInt(args[0]);
-        String path = "C:/Temp/CC/Fibonacci/";
+
+        int i = Integer.parseInt("10000000");
+        String path = "C:/Temp/CC/PrimorialResidue/";
         long start = System.nanoTime();
-        IO.write(path + i + ".txt", "" + Fibonacci.fibonacci_bi_optimized(i));
+        Format.pair(PrimorialResidue.find(i), path + i + ".txt");
         long end = System.nanoTime();
-        System.out.println("Done! (" + (end - start) / 1000000000 +  ")");
+        System.out.println("Done! (" + (end - start) / 1000000000 + ")");
 
         /*int i = Integer.parseInt("10000000");
         String path = "C:/Temp/CC/PrimorialResidue/";
@@ -50,7 +48,7 @@ public class CloudCompute {
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 +  ")");*/
 
-        /*int digits = 40000;
+ /*int digits = 40000;
         String s = CalcPi.pi_arctan(digits + 25).toString();
         int digits = 40000;
         String s = CalcPi.pi_arctan(digits + 250).toString();
