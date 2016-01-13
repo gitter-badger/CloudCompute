@@ -18,11 +18,8 @@ package cloudcompute;
 
 import cloudcompute.lib.IO;
 import cloudcompute.lib.Twitter.TwitterLib;
-<<<<<<< HEAD
 import cloudcompute.lib.examples.Fibonacci;
-=======
 import cloudcompute.lib.math.Sieves.Eratosthenes;
->>>>>>> origin/master
 import cloudcompute.lib.math.sequences.Format;
 import cloudcompute.lib.math.sequences.PrimorialResidue;
 import twitter4j.TwitterException;
