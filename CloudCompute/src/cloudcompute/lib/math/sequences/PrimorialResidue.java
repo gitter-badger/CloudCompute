@@ -17,7 +17,7 @@ import java.util.List;
 public class PrimorialResidue {
 
     public static List<Integer> find(int max) {
-        List<Integer> primes = Eratosthenes.primes(max);
+        List<Integer> primes = Eratosthenes.primes(max / (2 * 3 * 5 * 7 * 11) + 100);
         List<Integer> all = new ArrayList<>();
         for (int i = 0; i <= max; i++) {
             all.add(i);
@@ -25,6 +25,9 @@ public class PrimorialResidue {
         List<Integer> primorials = new ArrayList<>();
         for (int v : primes) {
             primorials.add(mul(primes.subList(0, primes.indexOf(v))));
+            if (primorials.get(primes.indexOf(v)) > max) {
+                break;
+            }
         }
         System.out.println(primorials);
         List<Integer> res = new ArrayList<>();
