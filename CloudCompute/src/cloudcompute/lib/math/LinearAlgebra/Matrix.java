@@ -170,6 +170,27 @@ public class Matrix {
         }
     }
     
+    /*
+    
+    
+    ONLY USE THE FOLLOWING TWO METHODS FOR FIBONACCI MATRICIES
+    asdflkajhsdf
+    
+    
+    
+    
+    
+    
+    
+    look at thisdfjaodsfhpasudhgip;as
+    HOWENOEFWNOWFENONWEOFNOFEW
+    
+    
+    
+    
+    
+    */
+    
     public static BigInteger[][] multiply_bi_2x2(BigInteger[][] A, BigInteger[][] B) {
         int nA = A[0].length;
         int mB = B.length;
@@ -177,16 +198,13 @@ public class Matrix {
         BigInteger[][] C = new BigInteger[2][2];
         BigInteger a = A[0][0];
         BigInteger b = A[1][0];
-        BigInteger c = A[0][1];
-        BigInteger d = A[1][1];
         BigInteger e = B[0][0];
         BigInteger f = B[1][0];
-        BigInteger g = B[0][1];
         BigInteger h = B[1][1];
-        C[0][0] = a.multiply(e).add(b.multiply(g));
+        C[0][0] = a.multiply(e).add(b.multiply(f));
         C[1][0] = a.multiply(f).add(b.multiply(h));
-        C[0][1] = c.multiply(e).add(d.multiply(g));
-        C[1][1] = c.multiply(f).add(d.multiply(h));
+        C[0][1] = C[1][0];
+        C[1][1] = C[0][0].add(C[0][1]);
         
         return C;
     }
