@@ -38,7 +38,7 @@ public class CloudCompute {
         int i = Integer.parseInt(args[0]);
         String path = "C:/Temp/CC/Fibonacci/";
         long start = System.nanoTime();
-        IO.write(path + i + ".txt", "" + Fibonacci.fibonacci_bi(i));
+        IO.write(path + i + ".txt", "" + Fibonacci.fibonacci_bi_optimized(i));
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 +  ")");
 
