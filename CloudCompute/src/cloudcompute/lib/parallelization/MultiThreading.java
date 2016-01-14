@@ -17,10 +17,11 @@
 package cloudcompute.lib.parallelization;
 
 /**
- *
+ * Everything parallel
  * @author brown
  */
 public class MultiThreading {
+    //Returns the cores in the system
     
     public static int getcores() {
         return Runtime.getRuntime().availableProcessors();

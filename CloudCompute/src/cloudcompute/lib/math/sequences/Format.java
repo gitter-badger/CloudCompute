@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- *
+ * Formats your strings for you!
  * @author brown
  */
 public class Format {

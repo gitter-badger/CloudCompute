@@ -30,6 +30,9 @@ import java.util.Set;
  */
 public class Fibonacci {
     
+    /*
+    Generating Fibonacci numbers that can fit into an int
+    */
     public static int fibonacci(int n) {
         int[][] m = Matrix.pow_i(new int[][]{{0, 1}, {1, 1}}, 3);
         int mod = n % 3;
@@ -46,26 +49,9 @@ public class Fibonacci {
             return d[1][0];
         }
     }
-    
-    public static BigInteger fibonacci_bi(int n) {
-        BigInteger[][] m = Matrix.pow_bi(new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}}, 3);
-        int mod = n % 3;
-        int pow = 0;
-        if (mod == 2) {
-            pow = n / 3 + 1;
-        } else {
-            pow = n / 3;
-        }
-        BigInteger[][] d = Matrix.pow_bi(m, pow);
-        if (mod == 1) {
-            return d[1][1];
-        } else if (mod == 2) {
-            return d[0][0];
-        } else {
-            return d[1][0];
-        }
-    }
-    
+    /*
+    Can be used for roughly the first 2.1 billion fibonacci numbers.
+    */
     public static BigInteger fibonacci_bi_optimized(int n) {
         BigInteger[][] m = Matrix.pow_bi(new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}}, 3);
         int mod = n % 3;
@@ -75,47 +61,16 @@ public class Fibonacci {
         } else {
             pow = n / 3;
         }
-        BigInteger[][] d = Matrix.pow_bi_2x2(m, pow);
-        if (mod == 1) {
-            return d[1][1];
-        } else if (mod == 2) {
-            return d[0][0];
-        } else {
-            return d[1][0];
+        BigInteger[][] d = Matrix.pow_bi_symetric(m, pow);
+        switch (mod) {
+            case 1:
+                return d[1][1];
+            case 2:
+                return d[0][0];
+            default:
+                return d[1][0];
         }
     }
     
-    public static List<Integer> fibonacci_list(int start, int end) {
-        List<Integer> f = new ArrayList<>();
-        int[][] m = Matrix.pow_i(new int[][]{{0, 1}, {1, 1}}, 3);
-        int[][] c = Matrix.pow_i(m, start / 3);
-        for (int i = 0; i <= (end - start) / 3; i++) {
-            f.add(c[0][0]);
-            f.add(c[1][0]);
-            f.add(c[1][1]);
-            c = Matrix.multiply_i(c, m);
-        }
-        return f;
-    }
-    
-    public static List<BigInteger> fibonacci_list_bi(int start, int end) {
-        List<BigInteger> f = new ArrayList<>();
-        BigInteger[][] m = Matrix.pow_bi(new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}}, 3);
-        int h = start / 3;
-        h += 1;
-        BigInteger[][] c = Matrix.pow_bi(m, h);
-        for (int i = start / 3; i <= end / 3; i++) {
-            f.add(c[0][0]);
-            f.add(c[1][0]);
-            f.add(c[1][1]);
-            c = Matrix.multiply_bi(c, m);
-        }
-        Set<BigInteger> hs = new HashSet<>();
-        hs.addAll(f);
-        f.clear();
-        f.addAll(hs);
-        Collections.sort(f);
-
-        return f;
-    }
+    //retired .getList() because it runs out of memory, you need to write them out as you calculate, then forget them.
 }

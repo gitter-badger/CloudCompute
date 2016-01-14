@@ -17,15 +17,20 @@
 package cloudcompute.lib.Twitter;
 
 /**
- *
+ * This file is used for connecting to a twitter account and tweeting, retweeting, and mimicing all actions associated with twitter.
  * @author brown
  */
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterLib {
+    //The main variable, that we do everything with.
     public static Twitter t;
 
+    /*
+    Initializes CloudComputeBot's login 
+    (https://twitter.com/CloudComputeBot)
+    */
     public static void init() {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -37,7 +42,10 @@ public class TwitterLib {
         t = tf.getInstance();
     }
     
+    /*
+    Tweets 's', unless is it larger than a tweet
+    */
     public static void tweet(String s) throws TwitterException {
-        Status status = t.updateStatus(s);
+        t.updateStatus(s);
     }
 }

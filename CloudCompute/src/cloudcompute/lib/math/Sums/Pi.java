@@ -24,7 +24,9 @@ import java.math.MathContext;
  * @author brown
  */
 public class Pi {
-    
+    /*
+    Calculates each individual arctan(not multithreaded) for use in
+    */
     public static BigDecimal atan_inv(int inv, int digits) {
         BigDecimal result = BigDecimal.ZERO;
         MathContext m = new MathContext(digits - 2);
@@ -34,9 +36,9 @@ public class Pi {
         
         int d = 1;
         
-        int sign = 1;
+        BigDecimal t = BigDecimal.ZERO;
         
-        BigDecimal t = BigDecimal.ONE;
+        int sign = 1;
         
         BigDecimal u = BigDecimal.ONE;
         

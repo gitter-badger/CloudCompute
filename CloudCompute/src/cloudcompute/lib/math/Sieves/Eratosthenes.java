@@ -21,19 +21,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * Calculates list of primes
  * @author brown
  */
 
 
 public class Eratosthenes {
     
-    //basic method
+    //basic method, calculates them quite fast.
     public static List<Integer> primes(int max) {
         List<Integer> p = new ArrayList<>();
         List<Integer> a = new ArrayList<>();
         int m = 1;
         p.add(2);
+        p.add(3);
+        p.add(5);
+        p.add(7);
+        p.add(11);
+        p.add(13);
+
         for (int v : p) {
             m *= v;
         }

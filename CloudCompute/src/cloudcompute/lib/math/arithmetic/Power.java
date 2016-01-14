@@ -23,35 +23,9 @@ import java.math.BigDecimal;
  * @author brown
  */
 public class Power {
-    
-    public static double pow_d_i(double b, int p) {
-        if (b == 1 || p == 0) {
-            return 1;
-        }
-        if (p == 2) {
-            return b * b;
-        }
-        if (p % 2 == 0) {
-            return pow_d_i(b * b, p / 2);
-        } else {
-            return b * pow_d_i(b * b, (p - 1) / 2);
-        }
-    }
-    
-    public static int pow_i_i(int b, int p) {
-        if (b == 1 || p == 0) {
-            return 1;
-        }
-        if (p == 2) {
-            return b * b;
-        }
-        if (p % 2 == 0) {
-            return pow_i_i(b * b, p / 2);
-        } else {
-            return b * pow_i_i(b * b, (p - 1) / 2);
-        }
-    }
-    
+    /*
+    Used for practice, but not really practicality
+    */
     public static BigDecimal pow_bd_i(BigDecimal b, int p) {
         if (b.compareTo(BigDecimal.ONE) == 0 || p == 0) {
             return BigDecimal.ONE;

@@ -34,7 +34,7 @@ public class CloudCompute {
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException {
         TwitterLib.init();
 
-        int i = Integer.parseInt("10000000");
+        int i = Integer.parseInt("20000000");
         String path = "C:/Temp/CC/PrimorialResidue/";
         long start = System.nanoTime();
         Format.pair(PrimorialResidue.find(i), path + i + ".txt");

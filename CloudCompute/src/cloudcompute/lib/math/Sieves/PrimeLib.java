@@ -19,12 +19,15 @@ package cloudcompute.lib.math.Sieves;
 import java.util.List;
 
 /**
- *
+ * Everything to do with primes!
  * @author brown
  */
 
 
 public class PrimeLib {
+    /*
+    Return true if they are coprime
+    */
     public static boolean arecoprime(int a, int b) {
         if (a != 1 && b != 1) {
             if (a == b + 1 || a == b - 1) {
@@ -38,6 +41,9 @@ public class PrimeLib {
             }
         return true;
     }
+    /*
+    Returns true if all in a are coprime to each other (set-wise coprime)
+    */
     public static boolean arecoprime_s(List<Integer> a) {
         int prev = 0;
         for (int v : a) {

@@ -21,11 +21,14 @@ import cloudcompute.lib.parallelization.math.Arctan_run;
 import java.math.BigDecimal;
 
 /**
- *
+ * Used to generate digits of pi. Currently using an inefficient arctan method that has O(b^digits) complexity
  * @author brown
  */
 public class CalcPi {
     
+    /*
+    Calculates pi using multithreading and a derivation of machin's formula
+    */
     public static BigDecimal pi_arctan(int digits) throws InterruptedException {
         BigDecimal a = new BigDecimal(176);
         BigDecimal b = new BigDecimal(28);
@@ -33,6 +36,7 @@ public class CalcPi {
         BigDecimal d = new BigDecimal(96);
         BigDecimal total = BigDecimal.ZERO;
         
+        //Manually doing all this, need to change it.
         Arctan_run t1 = new Arctan_run(57, digits);
         Arctan_run t2 = new Arctan_run(239, digits);
         Arctan_run t3 = new Arctan_run(682, digits);

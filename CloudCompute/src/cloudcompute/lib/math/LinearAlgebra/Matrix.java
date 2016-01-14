@@ -190,8 +190,10 @@ public class Matrix {
     
     
     */
-    
-    public static BigInteger[][] multiply_bi_2x2(BigInteger[][] A, BigInteger[][] B) {
+    /*
+    Used mainly for fibonacci matrix, but can be used for any 2x2 symetric matrices
+    */
+    public static BigInteger[][] multiply_bi_symetric(BigInteger[][] A, BigInteger[][] B) {
         int nA = A[0].length;
         int mB = B.length;
         if (nA != mB || nA != 2) throw new RuntimeException("Illegal dimensions.");
@@ -209,18 +211,18 @@ public class Matrix {
         return C;
     }
     
-    //same as repeated multiplication
-    public static BigInteger[][] pow_bi_2x2(BigInteger[][] A, int p) {
+    //same as repeated multiplication, but for symetric matricies
+    public static BigInteger[][] pow_bi_symetric(BigInteger[][] A, int p) {
         if (p == 1) {
             return A;
         }
         if (p == 2) {
-            return multiply_bi_2x2(A, A);
+            return multiply_bi_symetric(A, A);
         }
         if (p % 2 == 0) {
-            return pow_bi_2x2((pow_bi_2x2(A, 2)), p / 2);
+            return pow_bi_symetric((pow_bi_symetric(A, 2)), p / 2);
         } else {
-            return multiply_bi_2x2(A, pow_bi_2x2(pow_bi_2x2(A, 2), (p - 1)/2));
+            return multiply_bi_symetric(A, pow_bi_symetric(pow_bi_symetric(A, 2), (p - 1)/2));
         }
     }
     
