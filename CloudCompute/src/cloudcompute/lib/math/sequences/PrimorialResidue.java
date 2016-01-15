@@ -6,13 +6,12 @@
 package cloudcompute.lib.math.sequences;
 
 import cloudcompute.lib.parallelization.math.Sequences.PS_Task;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * This is used for calculating the number of non-zero digits in the primorial
@@ -25,30 +24,40 @@ public class PrimorialResidue {
     /*
     Used to calculate list of the sequence. Good for roughly 2 billion values
      */
-    public static int[] find(int max, int threads) throws InterruptedException, ExecutionException, Exception {
-        ExecutorService executor = Executors.newFixedThreadPool(threads);
-        List<Future<int[]>> list = new ArrayList<Future<int[]>>();
-        
-        for (int i = 0; i < max; i++) {
-            Callable<int[]> callable = new PS_Task(i * max / threads, (i+1) * max / threads);
-            Future<int[]> future = executor.submit(callable);
-            list.add(future);
-            
+    public static void find_mt(int max, int threads, String path) throws InterruptedException, ExecutionException, Exception {
+        File g = new File(path);
+        g.delete();
+        FileWriter f = new FileWriter(path, true);
+        List<Thread> coll = new ArrayList<>();
+        int __min = 0;
+        int __max = max / threads;
+        int ch = max / threads;
+        for (int i = 0; i < threads; i++) {
+            PS_Task t = new PS_Task(__min, __max, f);
+            coll.add(t);
+            __min += ch;
+            __max += ch;
         }
-        
-        int[] res = new int[max + 1];
-        int c = 0;
-        for (Future<int[]> f : list) {
-            for (int v : f.get()) {
-                if (!(c > max)) {
-                    res[c] = v;
-                    c++;
-                } else {
-                    return res;
-                }
-            }
+        System.out.println("Starting to join tasks");
+        for (Thread k : coll) {
+            k.start();
         }
-        
-        return res;
+        for (Thread k : coll) {
+            k.join();
+        }
+
+        System.out.println("All are done");
+
+        f.close();
+    }
+    
+    public static void find(int max, String path) throws IOException, InterruptedException {
+        File g = new File(path);
+        g.delete();
+        FileWriter f = new FileWriter(path, true);
+        PS_Task p = new PS_Task(0, max, f);
+        p.start();
+        p.join();
+        f.close();
     }
 }

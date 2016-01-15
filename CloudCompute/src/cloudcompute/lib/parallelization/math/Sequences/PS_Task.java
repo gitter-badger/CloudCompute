@@ -5,28 +5,38 @@
  */
 package cloudcompute.lib.parallelization.math.Sequences;
 
-import java.util.concurrent.Callable;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author director
  */
-public class PS_Task implements Callable<int[]> {
+public class PS_Task extends Thread {
 
     private int min;
     private int max;
     private int[] primorials;
-    
-    public PS_Task(int _min, int _max) {
+    private FileWriter w;
+
+    public PS_Task(int _min, int _max, FileWriter _w) {
         min = _min;
         max = _max;
         primorials = new int[]{1, 2, 6, 30, 210, 2310, 30030, 510510, 9699690, 223092870};
+        w = _w;
     }
-    
-        
+
     @Override
-    public int[] call() throws Exception {
-        int[] res = new int[max - min + 1];
+    public void run() {
+        String c = System.getProperty("line.separator");
+        try {
+            w.append("0 0" + c);
+        } catch (IOException ex) {
+            System.out.println("error while writing" + ex.getMessage());
+
+        }
         for (int t = min; t <= max; t++) {
             int count = 0;
             int r = t;
@@ -38,10 +48,14 @@ public class PS_Task implements Callable<int[]> {
                         count++;
                     }
                 }
+                String s = t + " " + count + c;
+                try {
+                    w.append(s);
+                } catch (IOException ex) {
+                    System.out.println("error while writing" + ex.getMessage());
+                }
             }
-            res[t - min] = (count);
         }
-        return res;
     }
 
 }
