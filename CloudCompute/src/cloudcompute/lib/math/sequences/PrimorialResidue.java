@@ -5,10 +5,14 @@
  */
 package cloudcompute.lib.math.sequences;
 
-import cloudcompute.lib.math.Sieves.Eratosthenes;
-import java.math.BigInteger;
+import cloudcompute.lib.parallelization.math.Sequences.PS_Task;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * This is used for calculating the number of non-zero digits in the primorial
@@ -21,50 +25,30 @@ public class PrimorialResidue {
     /*
     Used to calculate list of the sequence. Good for roughly 2 billion values
      */
-    public static List<Integer> find(int max) {
-        List<Integer> primes = Eratosthenes.primes(max / (2 * 3 * 5 * 7 * 11) + 100);
-        List<Integer> all = new ArrayList<>();
-        for (int i = 0; i <= max; i++) {
-            all.add(i);
+    public static int[] find(int max, int threads) throws InterruptedException, ExecutionException, Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
+        List<Future<int[]>> list = new ArrayList<Future<int[]>>();
+        
+        for (int i = 0; i < max; i++) {
+            Callable<int[]> callable = new PS_Task(i * max / threads, (i+1) * max / threads);
+            Future<int[]> future = executor.submit(callable);
+            list.add(future);
+            
         }
-        List<Integer> primorials = new ArrayList<>();
-        for (int v : primes) {
-            primorials.add(mul(primes.subList(0, primes.indexOf(v))));
-            if (primorials.get(primes.indexOf(v)) > max) {
-                break;
-            }
-        }
-        System.out.println(primorials);
-        List<Integer> res = new ArrayList<>();
-        for (int t : all) {
-            int count = 0;
-            int r = t;
-            while (r != 0) {
-                int curmod = 1;
-                for (int a : primorials) {
-                    if (a <= r && a > curmod) {
-                        curmod = a;
-                    }
+        
+        int[] res = new int[max + 1];
+        int c = 0;
+        for (Future<int[]> f : list) {
+            for (int v : f.get()) {
+                if (!(c > max)) {
+                    res[c] = v;
+                    c++;
+                } else {
+                    return res;
                 }
-                r = r % curmod;
-
-                count++;
             }
-            res.add(count);
         }
+        
         return res;
-
     }
-
-    /*
-    Just multiplies all numbers in a list
-    */
-    public static int mul(List<Integer> d) {
-        int a = 1;
-        for (int v : d) {
-            a *= v;
-        }
-        return a;
-    }
-
 }

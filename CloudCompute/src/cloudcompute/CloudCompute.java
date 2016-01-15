@@ -19,7 +19,11 @@ package cloudcompute;
 import cloudcompute.lib.Twitter.TwitterLib;
 import cloudcompute.lib.math.sequences.Format;
 import cloudcompute.lib.math.sequences.PrimorialResidue;
+import cloudcompute.lib.parallelization.MultiThreading;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
 import twitter4j.TwitterException;
 
 /**
@@ -31,15 +35,15 @@ public class CloudCompute {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException, TwitterException, IOException {
+    public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
-
-        int i = Integer.parseInt("20000000");
+        int i = Integer.parseInt("1000000");
         String path = "C:/Temp/CC/PrimorialResidue/";
         long start = System.nanoTime();
-        Format.pair(PrimorialResidue.find(i), path + i + ".txt");
+        Format.b_list(PrimorialResidue.find(i, MultiThreading.getcores()), path + i + ".txt");
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 + ")");
+        System.exit(0);
 
         /*int i = Integer.parseInt("10000000");
         String path = "C:/Temp/CC/PrimorialResidue/";

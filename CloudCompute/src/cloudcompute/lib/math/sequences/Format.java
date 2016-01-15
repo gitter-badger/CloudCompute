@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class Format {
 
-    public static String pair(List<?> l, String path) throws FileNotFoundException, IOException {
+    public static void pair(List<?> l, String path) throws FileNotFoundException, IOException {
         System.out.println("Making string");
         String res = "";
         String c = System.getProperty("line.separator");
@@ -40,6 +40,19 @@ public class Format {
                 out.write(v);
             }
         }
-        return null;
+    }
+        
+        public static void b_list(int[] d, String path) throws FileNotFoundException, IOException { //much faster on an SSD
+        System.out.println("Making string");
+        String c = System.getProperty("line.separator");
+        FileOutputStream out = new FileOutputStream(path);
+        int count = 0;
+        for (int i : d) {
+            String s = (count + " " + i + c);
+            for (char v : s.toCharArray()) {
+                out.write(v);
+            }
+            count++;
+        }
     }
 }
