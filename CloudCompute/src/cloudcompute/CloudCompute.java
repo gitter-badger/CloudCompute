@@ -37,9 +37,9 @@ public class CloudCompute {
      */
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
-        int i = Integer.MAX_VALUE;
-        //String path = "C:/Temp/CC/PrimorialResidue/";
-        String path = "K:/";
+        int i = 1000;
+        String path = "C:/Temp/CC/PrimorialResidue/";
+        //String path = "K:/";
         long start = System.nanoTime();
         System.out.println("Beginning to calculate");
         PrimorialResidue.find(i, path + i + ".txt");
