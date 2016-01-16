@@ -37,13 +37,13 @@ public class CloudCompute {
      */
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
-        int i = 100000000;
+        int i = Integer.MAX_VALUE;
         //String path = "C:/Temp/CC/PrimorialResidue/";
-        String path = "D:/";
+        String path = "K:/";
         long start = System.nanoTime();
         System.out.println("Beginning to calculate");
         PrimorialResidue.find(i, path + i + ".txt");
-        //PrimorialResidue.find_mt(i, 4, path + "TEST_" + i + ".txt");
+
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 + ")");
         System.exit(0);

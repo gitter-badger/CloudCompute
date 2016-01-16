@@ -21,36 +21,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class PrimorialResidue {
 
-    /*
-    Used to calculate list of the sequence. Good for roughly 2 billion values
-     */
-    public static void find_mt(int max, int threads, String path) throws InterruptedException, ExecutionException, Exception {
-        File g = new File(path);
-        g.delete();
-        FileWriter f = new FileWriter(path, true);
-        List<Thread> coll = new ArrayList<>();
-        int __min = 0;
-        int __max = max / threads;
-        int ch = max / threads;
-        for (int i = 0; i < threads; i++) {
-            PS_Task t = new PS_Task(__min, __max, f);
-            coll.add(t);
-            __min += ch;
-            __max += ch;
-        }
-        System.out.println("Starting to join tasks");
-        for (Thread k : coll) {
-            k.start();
-        }
-        for (Thread k : coll) {
-            k.join();
-        }
-
-        System.out.println("All are done");
-
-        f.close();
-    }
-    
     public static void find(int max, String path) throws IOException, InterruptedException {
         File g = new File(path);
         g.delete();
