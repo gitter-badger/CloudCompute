@@ -17,22 +17,24 @@
 package cloudcompute.lib.examples;
 
 import cloudcompute.lib.math.LinearAlgebra.Matrix;
+import cloudcompute.lib.parallelization.StringWriter;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  *
  * @author brown
  */
 public class Fibonacci {
-    
+
     /*
     Generating Fibonacci numbers that can fit into an int
-    */
+     */
     public static int fibonacci(int n) {
         int[][] m = Matrix.pow_i(new int[][]{{0, 1}, {1, 1}}, 3);
         int mod = n % 3;
@@ -49,9 +51,10 @@ public class Fibonacci {
             return d[1][0];
         }
     }
+
     /*
     Can be used for roughly the first 2.1 billion fibonacci numbers.
-    */
+     */
     public static BigInteger fibonacci_bi_optimized(int n) {
         BigInteger[][] m = Matrix.pow_bi(new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}}, 3);
         int mod = n % 3;
@@ -71,6 +74,31 @@ public class Fibonacci {
                 return d[1][0];
         }
     }
-    
+
+    public static void write(int n, String path, boolean btype) throws FileNotFoundException, IOException, InterruptedException {
+        File g = new File(path);
+        g.delete();
+        StringWriter sw = new StringWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path))));
+        BigInteger[][] w = new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}};
+        BigInteger[][] m = Matrix.pow_bi_symetric(w, 3);
+        String c;
+        if (btype) {
+            c = System.getProperty("line.separator");
+        } else {
+            c = ",";
+        }
+        int p = 1;
+        while (p <= n + 1) {
+            sw.add(w[0][0] + c + w[1][0] + c + w[1][1] + c);
+            p += 3;
+            w = Matrix.multiply_bi_symetric(w, m);
+        }
+        sw.add(w[0][0] + c + w[1][0] + c + w[1][1]);
+        sw.join();
+        sw.start();
+
+    }
+
+
     //retired .getList() because it runs out of memory, you need to write them out as you calculate, then forget them.
 }

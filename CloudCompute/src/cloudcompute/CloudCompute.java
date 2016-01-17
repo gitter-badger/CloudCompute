@@ -17,6 +17,7 @@
 package cloudcompute;
 
 import cloudcompute.lib.Twitter.TwitterLib;
+import cloudcompute.lib.examples.Fibonacci;
 import cloudcompute.lib.math.sequences.Format;
 import cloudcompute.lib.math.sequences.PrimorialResidue;
 import cloudcompute.lib.parallelization.MultiThreading;
@@ -37,36 +38,18 @@ public class CloudCompute {
      */
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
-        int i = 1000;
-        String path = "C:/Temp/CC/PrimorialResidue/";
-        //String path = "K:/";
+        
+        
+        String path = args[0];
+        int n = Integer.parseInt(args[1]);
+        boolean btype = Boolean.parseBoolean(args[2]);
+        
         long start = System.nanoTime();
         System.out.println("Beginning to calculate");
-        PrimorialResidue.find(i, path + i + ".txt");
-
+        Fibonacci.write(n, path + n + ".txt", btype);
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 + ")");
         System.exit(0);
 
-        /*int i = Integer.parseInt("10000000");
-        String path = "C:/Temp/CC/PrimorialResidue/";
-        long start = System.nanoTime();
-        IO.write(path + i + ".txt", "" + Format.pair(Eratosthenes.primes(i)));
-        long end = System.nanoTime();
-        System.out.println("Done! (" + (end - start) / 1000000000 +  ")");*/
-
- /*int digits = 40000;
-        String s = CalcPi.pi_arctan(digits + 25).toString();
-        int digits = 40000;
-        String s = CalcPi.pi_arctan(digits + 250).toString();
-        System.out.println("Calculated " + digits + "of pi");
-        Thread.sleep(1000 * 60 * 60 * 3);
-        int tweetsperhour = 6; //LESS THAN 100
-        System.out.println("Beginning to tweet");
-
-        for (int i = 0; i < digits; i += 140) {
-            TwitterLib.tweet(s.substring(i, i + 139));
-            Thread.sleep(3600000 / tweetsperhour);
-        }*/
     }
 }

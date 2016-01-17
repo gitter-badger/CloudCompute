@@ -18,11 +18,11 @@ import java.io.IOException;
  */
 public class PrimorialResidue {
 
-    public static void find(int max, String path) throws IOException, InterruptedException {
+    public static void find(long max, String path, boolean btype) throws IOException, InterruptedException {
         File g = new File(path);
         g.delete();
         FileOutputStream s = new FileOutputStream(path);
-        PS_Task p = new PS_Task(0, max, s, false);
+        PS_Task p = new PS_Task(0, max, s, btype);
         p.start();
         p.join();
     }

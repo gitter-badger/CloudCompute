@@ -5,8 +5,8 @@
  */
 package cloudcompute.lib.parallelization.math.Sequences;
 
+import cloudcompute.lib.parallelization.StringWriter;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -20,93 +20,79 @@ import java.util.logging.Logger;
  */
 public class PS_Task extends Thread {
 
-    private int min;
-    private int max;
-    private int[] primorials;
-    private BufferedWriter bw;
+    private long min;
+    private long max;
+    private long[] primorials;
+    private StringWriter sw;
     private boolean b_type;
 
-    public PS_Task(int _min, int _max, FileOutputStream _f, boolean _b_type) throws UnsupportedEncodingException {
+    public PS_Task(long _min, long _max, FileOutputStream _f, boolean _b_type) throws UnsupportedEncodingException {
         min = _min;
         max = _max;
-        primorials = new int[]{1, 2, 6, 30, 210, 2310, 30030, 510510, 9699690, 223092870};
-        bw = new BufferedWriter(new OutputStreamWriter(_f), 10000);
+        primorials = new long[]{1, 2, 6, 30, 210, 2310, 30030, 510510, 9699690, 223092870, Long.parseLong("6469693230"), Long.parseLong("200560490130")};
+        sw = new StringWriter(new BufferedWriter(new OutputStreamWriter(_f), 1250000000));
         b_type = _b_type;
     }
 
     @Override
     public void run() {
-        if (b_type) {
-            b_file();
-        } else {
-            storage_optimized();
+        try {
+            if (b_type) {
+                b_file();
+            } else {
+                storage_optimized();
+            }
+        } catch (Exception e) {
+            
         }
     }
 
-    public void b_file() {
-        String c_s = System.getProperty("line.separator");
-
-        try {
-            bw.append(0 + " " + 0 + c_s);
-        } catch (IOException ex) {
-            Logger.getLogger(PS_Task.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (int t = min; t <= max; t++) {
+    //Like a b-file on OEIS
+    public void b_file() throws InterruptedException, IOException {
+        String c = System.getProperty("line.separator");
+        sw.add(0 + " " + 0 + c);
+        for (long t = min; t <= max; t++) {
             int count = 0;
-            int r = t;
+            long r = t;
             while (r != 0) {
                 for (int a = primorials.length - 1; a >= 0; a--) {
-                    int p = primorials[a];
+                    long p = primorials[a];
                     if (p <= r) {
                         r = r % p;
                         count++;
                     }
                 }
-                try {
-                    bw.append(t + " " + count + c_s);
-                } catch (IOException ex) {
-                    System.out.println("error while writing" + ex.getMessage());
-                }
+                sw.add(t + " " + count + c);
             }
         }
-        try {
-            bw.close();
-        } catch (IOException ex) {
-            System.out.println("error while writing" + ex.getMessage());
-        }
+        sw.start();
+        sw.join();
     }
 
-    public void storage_optimized() {
-        String c_s = System.getProperty("line.separator");
-
-        try {
-            bw.append(0 + c_s);
-        } catch (IOException ex) {
-            Logger.getLogger(PS_Task.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (int t = min; t <= max; t++) {
+    //has a comma inbetween values
+    public void storage_optimized() throws InterruptedException, IOException {
+        String c = ",";
+        sw.add(0 + c);
+        for (long t = min; t <= max; t++) {
             int count = 0;
-            int r = t;
+            long r = t;
             while (r != 0) {
                 for (int a = primorials.length - 1; a >= 0; a--) {
-                    int p = primorials[a];
+                    long p = primorials[a];
                     if (p <= r) {
                         r = r % p;
                         count++;
                     }
                 }
-                try {
-                    bw.append(count + c_s);
-                } catch (IOException ex) {
-                    System.out.println("error while writing" + ex.getMessage());
+                if (t != max) {
+                    sw.add(count + c);
+                } else {
+                    sw.add("" + count);
                 }
             }
         }
-        try {
-            bw.close();
-        } catch (IOException ex) {
-            System.out.println("error while writing" + ex.getMessage());
-        }
+        sw.start();
+        sw.join();
     }
 
 }
