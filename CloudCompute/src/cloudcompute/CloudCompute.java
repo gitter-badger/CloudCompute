@@ -42,6 +42,7 @@ public class CloudCompute {
         long n = Long.parseLong(args[1]);
         String path = args[0];
 
+        //test
         boolean btype = Boolean.parseBoolean(args[2]);
         long start = System.nanoTime();
         System.out.println("Beginning to calculate");
