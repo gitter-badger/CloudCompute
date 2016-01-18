@@ -38,15 +38,14 @@ public class CloudCompute {
      */
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
-        
-        
+
+        long n = Long.parseLong(args[1]);
         String path = args[0];
-        int n = Integer.parseInt(args[1]);
+
         boolean btype = Boolean.parseBoolean(args[2]);
-        
         long start = System.nanoTime();
         System.out.println("Beginning to calculate");
-        Fibonacci.write(n, path + n + ".txt", btype);
+        PrimorialResidue.find(n, path, btype);
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 + ")");
         System.exit(0);
