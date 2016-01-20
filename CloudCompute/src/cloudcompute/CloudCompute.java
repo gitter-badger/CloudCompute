@@ -18,20 +18,24 @@ package cloudcompute;
 
 import cloudcompute.lib.Twitter.TwitterLib;
 import cloudcompute.lib.examples.Fibonacci;
-import cloudcompute.lib.math.sequences.Format;
-import cloudcompute.lib.math.sequences.PrimorialResidue;
-import cloudcompute.lib.parallelization.MultiThreading;
+import cloudcompute.lib.math.DataStructure.DiskSwapBigInt;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import javafx.application.Application;
-import static javafx.application.Application.launch;
 import twitter4j.TwitterException;
 
 /**
  *
  * @author director
  */
+
+/*
+PLANNED UPDATES:
+Solve linear equations. remember: x = B * A^-1
+
+ */
 public class CloudCompute {
+
+    public static String disk_swap = "C:/Temp/DISK_SWAP/";
 
     /**
      * @param args the command line arguments
@@ -39,7 +43,7 @@ public class CloudCompute {
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
 
-        long n = Long.parseLong(args[1]);
+        /*long n = Long.parseLong(args[1]);
         String path = args[0];
 
         //test
@@ -49,7 +53,9 @@ public class CloudCompute {
         PrimorialResidue.find(n, path, btype);
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 + ")");
-        System.exit(0);
-
+        System.exit(0);*/
+        
+        
+        
     }
 }
