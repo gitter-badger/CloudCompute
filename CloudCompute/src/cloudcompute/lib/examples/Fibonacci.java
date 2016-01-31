@@ -16,8 +16,11 @@
  */
 package cloudcompute.lib.examples;
 
+import cloudcompute.CloudCompute;
+import cloudcompute.lib.InputOutput.DiskSwap;
 import cloudcompute.lib.math.LinearAlgebra.Matrix;
-import cloudcompute.lib.parallelization.StringWriter;
+import cloudcompute.lib.InputOutput.StringWriter;
+import cloudcompute.lib.math.DataStructure.DiskSwapBigInt;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -93,7 +96,7 @@ public class Fibonacci {
         sw.start();
 
     }
-    
+
     public static void write_s(int n, String path) throws FileNotFoundException, IOException, InterruptedException {
         File g = new File(path);
         g.delete();
@@ -121,6 +124,24 @@ public class Fibonacci {
 
         sw.join();
         sw.start();
+
+    }
+
+    public static void fib_diskswap(int n) throws IOException, InterruptedException {
+        String a_path = CloudCompute.disk_swap + "a.txt";
+        String b_path = CloudCompute.disk_swap + "b.txt";
+        String c_path = CloudCompute.disk_swap + "c.txt";
+        DiskSwapBigInt a = new DiskSwapBigInt(a_path, (int) (.7 * n));
+        DiskSwapBigInt b = new DiskSwapBigInt(b_path, (int) (.7 * n));
+        DiskSwapBigInt c = new DiskSwapBigInt(c_path, (int) (.7 * n));
+        a.set(0);
+        b.set(1);
+        c.set(1);
+
+        a = DiskSwapBigInt.add(b, c, a_path);
+        //a = new DiskSwapBigInt(a_path, (int) (.7 * n));
+
+        b = DiskSwapBigInt.add(a, c, b_path);
 
     }
 

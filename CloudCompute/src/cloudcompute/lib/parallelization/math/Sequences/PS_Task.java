@@ -5,7 +5,7 @@
  */
 package cloudcompute.lib.parallelization.math.Sequences;
 
-import cloudcompute.lib.parallelization.StringWriter;
+import cloudcompute.lib.InputOutput.StringWriter;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -16,17 +16,21 @@
  */
 package cloudcompute.lib.math.DataStructure;
 
+import cloudcompute.lib.InputOutput.DiskSwap;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Formatter;
 
 /**
  * This class is meant to be used a DataStructure for fast internal computing.
+ *
  * @author brown
  */
 public class BigInt {
 
-    final static int BASE_DECIMAL_DIGITS = 9;
-    final static int BASE = (int) Math.pow(10, BASE_DECIMAL_DIGITS);
+    public final static int BASE_DECIMAL_DIGITS = 9;
+    public final static int BASE = (int) Math.pow(10, BASE_DECIMAL_DIGITS);
 
     private int[] digits;
 
@@ -35,6 +39,13 @@ public class BigInt {
      */
     public BigInt(int... d) {
         this.digits = d.clone();
+    }
+
+    /*
+    Creates an equivelant BigInteger
+     */
+    public BigInteger toBigInteger() {
+        return new BigInteger(this.toDecimalString());
     }
 
     /*
@@ -117,7 +128,7 @@ public class BigInt {
 
     /*
     Multiplies two BigInt s
-    */
+     */
     public BigInt times(BigInt operand) {
         int[] result = new int[this.digits.length + operand.digits.length];
         multiplyDigits(result, result.length - 1, this.digits, operand.digits);
@@ -151,4 +162,14 @@ public class BigInt {
             }
         }
     }
+
+    public DiskSwap store(String path) throws IOException {
+        DiskSwap p = new DiskSwap(path);
+        for (int i : digits) {
+            p.store("" + i);
+        }
+        return p;
+    }
+    
+
 }
