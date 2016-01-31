@@ -18,6 +18,8 @@ package cloudcompute;
 
 import cloudcompute.lib.Twitter.TwitterLib;
 import cloudcompute.lib.examples.Fibonacci;
+import cloudcompute.lib.math.LinearAlgebra.LinearAlgebraParallel;
+import cloudcompute.lib.math.LinearAlgebra.Matrix;
 import cloudcompute.lib.math.sequences.Format;
 import cloudcompute.lib.math.sequences.PrimorialResidue;
 import cloudcompute.lib.parallelization.MultiThreading;
@@ -39,6 +41,40 @@ public class CloudCompute {
     public static void main(String[] args) throws InterruptedException, TwitterException, IOException, ExecutionException, Exception {
         TwitterLib.init();
 
+
+        
+        double n = 1.1f;
+        double n_p = 1;
+        int s = 2000;
+        double[][] A = new double[s][s];
+        double[][] B = new double[s][s];
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                A[j][i] = 1 / (j + 1) + 1 / n_p;
+                n_p *= n;
+            }
+        }
+        double k_s = 1;
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                B[i][j] = k_s;
+                k_s = (j + 1) / (i + 1);
+            }
+        }
+        long start = System.nanoTime();
+        //double[][] AB = Matrix.multiply(A, B);
+        double[][] AB = LinearAlgebraParallel.multiply(A, B);
+        long end = System.nanoTime();
+        System.out.println((end - start)/Math.pow(10, 9));
+        
+         /*for (int i = 0; i < AB.length; i++) {
+            for (int j = 0; j < AB[i].length; j++) {
+                System.out.print(AB[i][j] + "  ");
+            }
+            System.out.print("\n");
+        }*/
+
+        /*
         long n = Long.parseLong(args[1]);
         String path = args[0];
 
@@ -50,6 +86,6 @@ public class CloudCompute {
         long end = System.nanoTime();
         System.out.println("Done! (" + (end - start) / 1000000000 + ")");
         System.exit(0);
-
+         */
     }
 }
