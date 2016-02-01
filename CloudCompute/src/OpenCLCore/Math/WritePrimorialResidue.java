@@ -57,7 +57,7 @@ public class WritePrimorialResidue {
         //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
         // Read the program sources and compile them :
         // Get and call the kernel :
-        CLKernel addFloatsKernel = Lib.program_pr.createKernel("primorialResidue");
+        CLKernel addFloatsKernel = Lib.programs.get("pr").createKernel("primorialResidue");
         addFloatsKernel.setArgs(i, out, max);
         CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{max});
 

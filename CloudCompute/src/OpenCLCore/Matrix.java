@@ -31,6 +31,7 @@ import java.lang.reflect.Array;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import org.bridj.Pointer;
+import static org.bridj.Pointer.allocateDoubles;
 import static org.bridj.Pointer.allocateFloats;
 import static org.bridj.Pointer.allocateInts;
 
@@ -60,17 +61,47 @@ public class Matrix {
         if (A[0].length != B.length) {
             throw new RuntimeException();
         }
-        float[][] C = new float[rows][columns];
-        for (int j = 0; j < columns; j++) {
-            float[] curCol = new float[B.length];
-            for (int k = 0; k < curCol.length; k++) {
-                curCol[k] = B[k][j];
+        ByteOrder byteOrder = Lib.context.getByteOrder();
+
+        Pointer<Float> apo = allocateFloats(A.length * A[0].length).order(byteOrder);
+        Pointer<Float> bpo = allocateFloats(B.length * B[0].length).order(byteOrder);
+        Pointer<Float> op = allocateFloats(rows * columns).order(byteOrder);
+
+        int counter = 0;
+        for (int l1 = 0; l1 < A.length; l1++) {
+            for (int l2 = 0; l2 < A[0].length; l2++) {
+                apo.set(counter, A[l1][l2]);
+                counter++;
             }
-            for (int i = 0; i < rows; i++) {
-                long start = System.nanoTime();
-                C[i][j] = vectorScalar(A[i], curCol);
-                long end = System.nanoTime();
-                //System.out.println((end - start)/(Math.pow(10, 9)) + "\n");
+        }
+
+        counter = 0;
+        for (int l1 = 0; l1 < B.length; l1++) {
+            for (int l2 = 0; l2 < B[0].length; l2++) {
+                bpo.set(counter, B[l1][l2]);
+                counter++;
+            }
+        }
+
+        // Create OpenCL input buffers (using the native memory pointers aPtr and bPtr) :
+        CLBuffer<Float> a = Lib.context.createBuffer(CLMem.Usage.Input, apo);
+        CLBuffer<Float> b = Lib.context.createBuffer(CLMem.Usage.Input, bpo);
+
+        CLBuffer<Float> out = Lib.context.createFloatBuffer(CLMem.Usage.Output, op);
+
+        //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
+        // Read the program sources and compile them :
+        // Get and call the kernel :
+        CLKernel addFloatsKernel = Lib.programs.get("mat").createKernel("mul");
+        addFloatsKernel.setArgs(a, b, out, rows, columns, A.length, B[0].length);
+        CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{rows * columns});
+
+        float[][] C = new float[rows][columns];
+        // System.out.println("Done");
+        Pointer<Float> outPtr = out.read(Lib.queue, addEvt); // blocks until add_floats finished
+        for (int m = 0; m < rows; m++) {
+            for (int n = 0; n < columns; n++) {
+                C[m][n] = outPtr.get(m * rows + n);
             }
         }
         return C;
@@ -100,7 +131,7 @@ public class Matrix {
         //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
         // Read the program sources and compile them :
         // Get and call the kernel :
-        CLKernel addFloatsKernel = Lib.program_vsp.createKernel("vectorScalarProduct");
+        CLKernel addFloatsKernel = Lib.programs.get("vsp").createKernel("vectorScalarProduct");
         addFloatsKernel.setArgs(i, j, out, length);
         CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{length});
 
@@ -108,5 +139,57 @@ public class Matrix {
         Pointer<Float> outPtr = out.read(Lib.queue, addEvt); // blocks until add_floats finished
 
         return Arithmetic.addFloats(outPtr.getFloats());
+    }
+    
+    public static double[][] mul(double[][] A, double[][] B) throws IOException {
+        int rows = A.length;
+        int columns = B[0].length;
+        if (A[0].length != B.length) {
+            throw new RuntimeException();
+        }
+        ByteOrder byteOrder = Lib.context.getByteOrder();
+
+        Pointer<Double> apo = allocateDoubles(A.length * A[0].length).order(byteOrder);
+        Pointer<Double> bpo = allocateDoubles(B.length * B[0].length).order(byteOrder);
+        Pointer<Double> op = allocateDoubles(rows * columns).order(byteOrder);
+
+        int counter = 0;
+        for (int l1 = 0; l1 < A.length; l1++) {
+            for (int l2 = 0; l2 < A[0].length; l2++) {
+                apo.set(counter, A[l1][l2]);
+                counter++;
+            }
+        }
+
+        counter = 0;
+        for (int l1 = 0; l1 < B.length; l1++) {
+            for (int l2 = 0; l2 < B[0].length; l2++) {
+                bpo.set(counter, B[l1][l2]);
+                counter++;
+            }
+        }
+
+        // Create OpenCL input buffers (using the native memory pointers aPtr and bPtr) :
+        CLBuffer<Double> a = Lib.context.createBuffer(CLMem.Usage.Input, apo);
+        CLBuffer<Double> b = Lib.context.createBuffer(CLMem.Usage.Input, bpo);
+
+        CLBuffer<Double> out = Lib.context.createDoubleBuffer(CLMem.Usage.Output, op);
+
+        //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
+        // Read the program sources and compile them :
+        // Get and call the kernel :
+        CLKernel addFloatsKernel = Lib.programs.get("mat_d").createKernel("mul");
+        addFloatsKernel.setArgs(a, b, out, rows, columns, A.length, B[0].length);
+        CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{rows * columns});
+
+        double[][] C = new double[rows][columns];
+        // System.out.println("Done");
+        Pointer<Double> outPtr = out.read(Lib.queue, addEvt); // blocks until add_floats finished
+        for (int m = 0; m < rows; m++) {
+            for (int n = 0; n < columns; n++) {
+                C[m][n] = outPtr.get(m * rows + n);
+            }
+        }
+        return C;
     }
 }
