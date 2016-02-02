@@ -123,6 +123,5 @@ public class Fibonacci {
 
         sw.join();
         sw.start();
-
     }
 }

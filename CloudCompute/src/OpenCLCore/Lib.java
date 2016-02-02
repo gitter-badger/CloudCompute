@@ -42,11 +42,9 @@ public class Lib {
     public static void init() throws IOException {
         
         CLProgram program_vsp = context.createProgram(IOUtils.readText(Lib.class.getResource("kernels/vectorscalarproduct.cl")));
-        CLProgram program_pr = context.createProgram(IOUtils.readText(Lib.class.getResource("kernels/primorialresidue.cl")));
         CLProgram program_mat = context.createProgram(IOUtils.readText(Lib.class.getResource("kernels/matrix.cl")));
         CLProgram program_mat_d = context.createProgram(IOUtils.readText(Lib.class.getResource("kernels/matrix_d.cl")));
         programs.put("vsp", program_vsp);
-        programs.put("pr", program_pr);
         programs.put("mat", program_mat);
         programs.put("mat_d", program_mat_d);
     }
