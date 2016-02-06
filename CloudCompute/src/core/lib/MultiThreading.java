@@ -14,29 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package core.lib.parallelization.math;
-
-import core.lib.examples.Fibonacci;
-import core.lib.math.Sums.Pi;
-import java.math.BigDecimal;
+package core.lib;
 
 /**
- *
+ * Everything parallel
  * @author brown
  */
-public class Arctan_run extends Thread {
-    int inv;
-    int digits;
+public class MultiThreading {
+    //Returns the cores in the system
     
-    public BigDecimal r = BigDecimal.ZERO;
-    
-    public Arctan_run(int _inv, int _digits) {
-        inv = _inv;
-        digits = _digits;
+    public static int getCores() {
+        return Runtime.getRuntime().availableProcessors();
     }
     
-     @Override
-    public void run() {
-        r = Pi.atan_inv(inv, digits);
+    public static long getAvailableMemory() {
+        return Runtime.getRuntime().freeMemory();
     }
 }

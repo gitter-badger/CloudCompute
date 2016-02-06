@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package core.lib.examples;
+package core.lib.math.sequences;
 
+import core.lib.examples.*;
 import core.lib.InputOutput.DiskSwap;
 import core.lib.math.LinearAlgebra.Matrix;
 import core.lib.InputOutput.StringWriter;
@@ -33,29 +34,9 @@ import java.math.BigInteger;
  * @author brown
  */
 public class Fibonacci {
-
-    /*
-    Generating Fibonacci numbers that can fit into an int
-     */
-    public static int fibonacci(int n) {
-        int[][] m = Matrix.pow_i(new int[][]{{0, 1}, {1, 1}}, 3);
-        int mod = n % 3;
-        int pow = 0;
-        if (mod == 2) {
-            pow = n / 3 - 1;
-        } else {
-            pow = n / 3 - 1;
-        }
-        int[][] d = Matrix.pow_i(m, pow);
-        if (mod != 0) {
-            return d[1][1];
-        } else {
-            return d[1][0];
-        }
-    }
-
     /*
     Can be used for roughly the first 2.1 billion fibonacci numbers.
+    Takes up a lot of ram at this point
      */
     public static BigInteger fibonacci_bi_optimized(int n) {
         BigInteger[][] m = Matrix.pow_bi(new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}}, 3);

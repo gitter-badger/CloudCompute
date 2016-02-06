@@ -36,11 +36,10 @@ public class IO {
             }
 
             FileWriter fw = new FileWriter(file);
-            bw = new BufferedWriter(fw);
+            bw = new BufferedWriter(fw, (int) (MultiThreading.getAvailableMemory() / 4));
             bw.write(contents);
 
         } catch (IOException ioe) {
-            ioe.printStackTrace();
         } finally {
             try {
                 if (bw != null) {
