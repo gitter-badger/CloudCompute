@@ -5,7 +5,6 @@
  */
 package core.lib.parallelization.math.Sequences;
 
-import core.lib.InputOutput.StringWriter;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,14 +22,14 @@ public class PS_Task extends Thread {
     private long min;
     private long max;
     private long[] primorials;
-    private StringWriter sw;
+    private BufferedWriter bw;
     private boolean b_type;
 
     public PS_Task(long _min, long _max, FileOutputStream _f, boolean _b_type) throws UnsupportedEncodingException {
         min = _min;
         max = _max;
         primorials = new long[]{1, 2, 6, 30, 210, 2310, 30030, 510510, 9699690, 223092870, Long.parseLong("6469693230"), Long.parseLong("200560490130")};
-        sw = new StringWriter(new BufferedWriter(new OutputStreamWriter(_f), 1250000000));
+        bw = new BufferedWriter(new OutputStreamWriter(_f), 1250000000);
         b_type = _b_type;
     }
 
@@ -50,7 +49,7 @@ public class PS_Task extends Thread {
     //Like a b-file on OEIS
     public void b_file() throws InterruptedException, IOException {
         String c = System.getProperty("line.separator");
-        sw.add(0 + " " + 0 + c);
+        bw.append(0 + " " + 0 + c);
         for (long t = min; t <= max; t++) {
             int count = 0;
             long r = t;
@@ -62,17 +61,15 @@ public class PS_Task extends Thread {
                         count++;
                     }
                 }
-                sw.add(t + " " + count + c);
+                bw.append(t + " " + count + c);
             }
         }
-        sw.start();
-        sw.join();
     }
 
     //has a comma inbetween values
     public void storage_optimized() throws InterruptedException, IOException {
         String c = ",";
-        sw.add(0 + c);
+        bw.append(0 + c);
         for (long t = min; t <= max; t++) {
             int count = 0;
             long r = t;
@@ -85,13 +82,12 @@ public class PS_Task extends Thread {
                     }
                 }
                 if (t != max) {
-                    sw.add(count + c);
+                    bw.append(count + c);
                 } else {
-                    sw.add("" + count);
+                    bw.append("" + count);
                 }
             }
         }
-        sw.start();
-        sw.join();
+
     }
 }

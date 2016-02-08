@@ -16,11 +16,7 @@
  */
 package core.lib.math.sequences;
 
-import core.lib.examples.*;
-import core.lib.InputOutput.DiskSwap;
 import core.lib.math.LinearAlgebra.Matrix;
-import core.lib.InputOutput.StringWriter;
-import core.lib.math.DataStructure.DiskSwapBigInt;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,48 +57,41 @@ public class Fibonacci {
     public static void write(int n, String path) throws FileNotFoundException, IOException, InterruptedException {
         File g = new File(path);
         g.delete();
-        StringWriter sw = new StringWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path))));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path)));
         BigInteger[][] w = new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}};
         BigInteger[][] m = Matrix.pow_bi_symetric(w, 3);
         String c = ",";
         int p = 1;
         while (p <= n + 1) {
-            sw.add(w[0][0] + c + w[1][0] + c + w[1][1] + c);
+            bw.append(w[0][0] + c + w[1][0] + c + w[1][1] + c);
             p += 3;
             w = Matrix.multiply_bi_symetric(w, m);
         }
-        sw.add(w[0][0] + c + w[1][0] + c + w[1][1]);
-        sw.join();
-        sw.start();
+        bw.append(w[0][0] + c + w[1][0] + c + w[1][1]);
 
     }
 
     public static void write_s(int n, String path) throws FileNotFoundException, IOException, InterruptedException {
         File g = new File(path);
         g.delete();
-        StringWriter sw = new StringWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path))));
-        sw.add(fibonacci_bi_optimized(n).toString());
-        sw.join();
-        sw.start();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path)));
+        bw.append(fibonacci_bi_optimized(n).toString());
 
     }
 
     public static void write_bfile(int n, String path) throws IOException, InterruptedException {
         File g = new File(path);
         g.delete();
-        StringWriter sw = new StringWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path))));
+        BufferedWriter bw =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path)));
         BigInteger[][] w = new BigInteger[][]{{BigInteger.ZERO, BigInteger.ONE}, {BigInteger.ONE, BigInteger.ONE}};
         BigInteger[][] m = Matrix.pow_bi_symetric(w, 3);
         String c = System.getProperty("line.separator");
         int p = 0;
         while (p <= n + 1) {
-            sw.add(p + " " + w[0][0] + c + (p + 1) + " " + w[1][0] + c + (p + 2) + " " + w[1][1] + c);
+            bw.append(p + " " + w[0][0] + c + (p + 1) + " " + w[1][0] + c + (p + 2) + " " + w[1][1] + c);
             p += 3;
             w = Matrix.multiply_bi_symetric(w, m);
         }
-        sw.add(p + " " + w[0][0] + c + (p + 1) + " " + w[1][0] + c + (p + 2) + " " + w[1][1] + c);
-
-        sw.join();
-        sw.start();
+        bw.append(p + " " + w[0][0] + c + (p + 1) + " " + w[1][0] + c + (p + 2) + " " + w[1][1] + c);
     }
 }
