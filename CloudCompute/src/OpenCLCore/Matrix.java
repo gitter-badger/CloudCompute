@@ -1,16 +1,13 @@
-/*
- * Copyright (C) ChemicalDevelopment 2016
- *
+/* 
+ * Copyright (C) 2016 ChemicalDevelopment
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,12 +33,12 @@ import static org.bridj.Pointer.allocateFloats;
 import static org.bridj.Pointer.allocateInts;
 
 /**
- *
+ * Multiplication and power of floats, using a GPU. Does a 2000x2000 float matrix by another one on a laptop in 2.8 seconds
  * @author brown
  */
 public class Matrix {
 
-    public static float[][] pow(float[][] A, int p) throws IOException {
+    public static float[][] pow(float[][] A, int p) throws IOException { //returns A^p, through 2k-ary method
         if (p == 1) {
             return A;
         }
@@ -55,7 +52,7 @@ public class Matrix {
         }
     }
 
-    public static float[][] mul(float[][] A, float[][] B) throws IOException {
+    public static float[][] mul(float[][] A, float[][] B) throws IOException { //returns A * B, using individual vectorscalar product pointers
         int rows = A.length;
         int columns = B[0].length;
         if (A[0].length != B.length) {
@@ -83,22 +80,18 @@ public class Matrix {
             }
         }
 
-        // Create OpenCL input buffers (using the native memory pointers aPtr and bPtr) :
         CLBuffer<Float> a = Lib.context.createBuffer(CLMem.Usage.Input, apo);
         CLBuffer<Float> b = Lib.context.createBuffer(CLMem.Usage.Input, bpo);
 
         CLBuffer<Float> out = Lib.context.createFloatBuffer(CLMem.Usage.Output, op);
 
-        //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
-        // Read the program sources and compile them :
-        // Get and call the kernel :
         CLKernel addFloatsKernel = Lib.programs.get("mat").createKernel("mul");
         addFloatsKernel.setArgs(a, b, out, rows, columns, A.length, B[0].length);
         CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{rows * columns});
 
         float[][] C = new float[rows][columns];
-        // System.out.println("Done");
-        Pointer<Float> outPtr = out.read(Lib.queue, addEvt); // blocks until add_floats finished
+        
+        Pointer<Float> outPtr = out.read(Lib.queue, addEvt);
         for (int m = 0; m < rows; m++) {
             for (int n = 0; n < columns; n++) {
                 C[m][n] = outPtr.get(m * rows + n);
@@ -107,9 +100,8 @@ public class Matrix {
         return C;
     }
 
-    public static float vectorScalar(float[] v, float[] s) throws IOException {
+    public static float vectorScalar(float[] v, float[] s) throws IOException { //just one vector scalar
         int length = v.length;
-        //System.out.println("Starting");
 
         ByteOrder byteOrder = Lib.context.getByteOrder();
 
@@ -122,26 +114,21 @@ public class Matrix {
             spo.set(i, s[i]);
         }
 
-        // Create OpenCL input buffers (using the native memory pointers aPtr and bPtr) :
         CLBuffer<Float> i = Lib.context.createBuffer(CLMem.Usage.Input, vpo);
         CLBuffer<Float> j = Lib.context.createBuffer(CLMem.Usage.Input, spo);
 
         CLBuffer<Float> out = Lib.context.createFloatBuffer(CLMem.Usage.Output, op);
 
-        //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
-        // Read the program sources and compile them :
-        // Get and call the kernel :
         CLKernel addFloatsKernel = Lib.programs.get("vsp").createKernel("vectorScalarProduct");
         addFloatsKernel.setArgs(i, j, out, length);
         CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{length});
 
-        // System.out.println("Done");
-        Pointer<Float> outPtr = out.read(Lib.queue, addEvt); // blocks until add_floats finished
+        Pointer<Float> outPtr = out.read(Lib.queue, addEvt);
 
         return Arithmetic.addFloats(outPtr.getFloats());
     }
     
-    public static double[][] mul(double[][] A, double[][] B) throws IOException {
+    public static double[][] mul(double[][] A, double[][] B) throws IOException { //doouble precision multiplication. Make sure your GPU and CPU support double floating point operations
         int rows = A.length;
         int columns = B[0].length;
         if (A[0].length != B.length) {
@@ -169,22 +156,17 @@ public class Matrix {
             }
         }
 
-        // Create OpenCL input buffers (using the native memory pointers aPtr and bPtr) :
         CLBuffer<Double> a = Lib.context.createBuffer(CLMem.Usage.Input, apo);
         CLBuffer<Double> b = Lib.context.createBuffer(CLMem.Usage.Input, bpo);
 
         CLBuffer<Double> out = Lib.context.createDoubleBuffer(CLMem.Usage.Output, op);
 
-        //CLBuffer<Float> createBuffer = context.createBuffer(CLMem.Usage.Output, Float.class, 1);
-        // Read the program sources and compile them :
-        // Get and call the kernel :
         CLKernel addFloatsKernel = Lib.programs.get("mat_d").createKernel("mul");
         addFloatsKernel.setArgs(a, b, out, rows, columns, A.length, B[0].length);
         CLEvent addEvt = addFloatsKernel.enqueueNDRange(Lib.queue, new int[]{rows * columns});
 
         double[][] C = new double[rows][columns];
-        // System.out.println("Done");
-        Pointer<Double> outPtr = out.read(Lib.queue, addEvt); // blocks until add_floats finished
+        Pointer<Double> outPtr = out.read(Lib.queue, addEvt);
         for (int m = 0; m < rows; m++) {
             for (int n = 0; n < columns; n++) {
                 C[m][n] = outPtr.get(m * rows + n);

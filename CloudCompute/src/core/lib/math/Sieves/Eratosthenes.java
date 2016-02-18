@@ -1,16 +1,13 @@
 /* 
- * Copyright (C) ChemicalDevelopment 2016
- *
+ * Copyright (C) 2016 ChemicalDevelopment
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +26,7 @@ import java.util.List;
 
 public class Eratosthenes {
     
-    //basic method, calculates them quite fast.
+    //basic method, calculates them quite fast. 
     public static List<Integer> primes(int max) {
         List<Integer> p = new ArrayList<>();
         List<Integer> a = new ArrayList<>();
@@ -54,7 +51,7 @@ public class Eratosthenes {
             
         }
         
-        List<Integer> toremove = new ArrayList<Integer>();
+        List<Integer> toremove = new ArrayList<>();
         
         for (int i = 0; i <= max / m; i++) {
             for  (int b : a) {
@@ -72,7 +69,8 @@ public class Eratosthenes {
         }
         p.removeAll(toremove);
         Collections.sort(p);
-        p.remove(0);
+        p.remove(0); //remove special cases
+        p.remove(1);
         
         return p;
         
