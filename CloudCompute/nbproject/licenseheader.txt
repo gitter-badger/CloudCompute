@@ -1,6 +1,0 @@
-<#if licenseFirst??>
-${licenseFirst}
-${licensePrefix} ChemicalDevelopment 2016
-${licensePrefix} Cloud computing parallel tasks
-<#if licenseLast??>
-${licenseLast}
