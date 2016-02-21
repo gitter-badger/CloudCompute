@@ -11,23 +11,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package core.lib.Twitter;
 
 /**
  * This file is used for connecting to a twitter account and tweeting, retweeting, and mimicing all actions associated with twitter.
+ *
  * @author brown
  */
-import twitter4j.*;
+import java.util.List;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterLib {
+
     //The main variable, that we do everything with.
     public static Twitter t;
 
     /*
     Initializes CloudComputeBot's login 
     (https://twitter.com/CloudComputeBot)
-    */
+     */
     public static void init() {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -38,11 +45,18 @@ public class TwitterLib {
         TwitterFactory tf = new TwitterFactory(cb.build());
         t = tf.getInstance();
     }
-    
+
     /*
     Tweets 's', unless is it larger than a tweet
-    */
+     */
     public static void tweet(String s) throws TwitterException {
         t.updateStatus(s);
+    }
+    
+    /*
+    Returns mentions of you
+    */
+    public static List<Status> getMentions() throws TwitterException {
+        return t.getMentionsTimeline();
     }
 }
